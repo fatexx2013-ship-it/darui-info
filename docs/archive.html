@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>归档检索 · 大瑞的信息网</title>
+<meta name="description" content="按日期浏览与跨归档关键词检索：大瑞的信息网历史快照。">
+<link rel="stylesheet" href="styles.css">
+<script src="data.js"></script>
+<script src="archive/index.js"></script>
+<script src="common.js"></script>
+<script src="archive.js"></script>
+</head>
+<body>
+<div class="bg-glow"></div>
+
+<header class="site-head">
+  <div class="wrap head-inner">
+    <div class="brand">
+      <span class="logo">◈</span>
+      <span class="brand-name">大瑞的<em>信息网</em></span>
+    </div>
+    <nav class="nav">
+      <a href="index.html">首页</a>
+      <a href="archive.html" class="strong">归档检索</a>
+      <a href="report.json" target="_blank" rel="noopener" class="hide-sm">抓取报告</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero wrap" style="padding:40px 0 12px;text-align:left">
+  <h1 style="font-size:clamp(24px,4vw,38px)">归档<span class="grad">检索</span></h1>
+  <p class="sub">按日期浏览每日快照，或在全部归档中按关键词 / 板块 / 日期范围检索。
+     同一日内多次抓取的条目已合并去重，来源与首发时间保留在条目中。</p>
+</section>
+
+<section class="wrap" id="searchPanel">
+  <div class="panel">
+    <div class="panel-row">
+      <input type="text" id="kw" placeholder="关键词检索：标题 / 摘要 / 来源">
+      <button class="btn" id="btnSearch">跨归档检索</button>
+      <button class="btn ghost" id="btnClear">清空条件</button>
+    </div>
+    <div class="panel-row">
+      <span class="panel-label">板块</span>
+      <label class="chk" data-block-chk="geopolitics"><input type="checkbox" value="geopolitics">国际观察</label>
+      <label class="chk" data-block-chk="oddities"><input type="checkbox" value="oddities">奇闻怪事</label>
+      <label class="chk" data-block-chk="domestic"><input type="checkbox" value="domestic">国内热点</label>
+      <label class="chk" data-block-chk="buzz"><input type="checkbox" value="buzz">网络舆论</label>
+      <label class="chk" data-block-chk="tech"><input type="checkbox" value="tech">科技前沿</label>
+    </div>
+    <div class="panel-row">
+      <span class="panel-label">日期</span>
+      <input type="date" id="from" aria-label="起始日期">
+      <span class="panel-label">→</span>
+      <input type="date" id="to" aria-label="结束日期">
+      <label class="chk" id="inDayOnly"><input type="checkbox" checked>仅检索当前选中日期</label>
+      <span id="searchHint" class="hint"></span>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="results">
+  <div class="res-head">
+    <h2>检索结果</h2>
+    <span class="res-count" id="resCount"></span>
+  </div>
+  <div id="resBody"></div>
+</section>
+
+<div class="wrap arc-layout">
+  <aside class="arc-side">
+    <h3>归档日期</h3>
+    <p class="stat" id="arcStat">载入中…</p>
+    <div id="dayList"></div>
+  </aside>
+  <main class="arc-main" id="dayView">
+    <div class="skeleton">正在载入归档…</div>
+  </main>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="toplinks">
+      <a href="index.html">返回首页</a>
+      <a href="archive/index.json" target="_blank" rel="noopener">归档索引（JSON）</a>
+    </div>
+    <div>大瑞的信息网 · 归档快照按日保存，标题与摘要仅用于自用选题参考，版权归各原始来源所有。</div>
+  </div>
+</footer>
+
+</body>
+</html>

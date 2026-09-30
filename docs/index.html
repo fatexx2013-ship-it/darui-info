@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>大瑞的信息网 · 每日两更</title>
+<meta name="description" content="个人自用「大瑞的信息网」：国际观察 / 奇闻怪事 / 国内热点 / 网络舆论 / 科技前沿，每日两更，支持归档检索。">
+<link rel="stylesheet" href="styles.css">
+<script src="data.js"></script>
+<script src="archive/index.js"></script>
+<script src="common.js"></script>
+<script src="app.js"></script>
+</head>
+<body>
+<div class="bg-glow"></div>
+
+<header class="site-head">
+  <div class="wrap head-inner">
+    <div class="brand">
+      <span class="logo">◈</span>
+      <span class="brand-name">大瑞的<em>信息网</em></span>
+    </div>
+    <nav class="nav" id="nav">
+      <a href="#board-geopolitics">国际观察</a>
+      <a href="#board-oddities">奇闻怪事</a>
+      <a href="#board-domestic">国内热点</a>
+      <a href="#board-buzz">网络舆论</a>
+      <a href="#board-tech">科技前沿</a>
+      <a href="archive.html" class="strong">归档检索</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero wrap">
+  <h1>大瑞的<span class="grad">信息网</span></h1>
+  <p class="sub">每日两更（北京时间 08:00 / 20:00 由 GitHub Actions 自动抓取）。
+     五大板块聚合公开订阅源与热榜，仅存标题与摘要，正文跳转原始来源；自用选题材料库，非对外展示。</p>
+  <div class="hero-meta" id="heroMeta"></div>
+</section>
+
+<section class="wrap" id="searchPanel">
+  <div class="panel">
+    <div class="panel-row">
+      <input type="text" id="kw" placeholder="关键词检索：标题 / 摘要 / 来源，多个词用空格分隔">
+      <button class="btn" id="btnSearch">检索</button>
+      <button class="btn ghost" id="btnReset">重置</button>
+    </div>
+    <div class="panel-row">
+      <span class="panel-label">板块</span>
+      <label class="chk" data-block-chk="geopolitics"><input type="checkbox" value="geopolitics">国际观察</label>
+      <label class="chk" data-block-chk="oddities"><input type="checkbox" value="oddities">奇闻怪事</label>
+      <label class="chk" data-block-chk="domestic"><input type="checkbox" value="domestic">国内热点</label>
+      <label class="chk" data-block-chk="buzz"><input type="checkbox" value="buzz">网络舆论</label>
+      <label class="chk" data-block-chk="tech"><input type="checkbox" value="tech">科技前沿</label>
+    </div>
+    <div class="panel-row">
+      <span class="panel-label">范围</span>
+      <div class="seg" id="scopeSeg">
+        <button data-scope="latest" class="active">仅最新一期</button>
+        <button data-scope="archive">含历史归档</button>
+      </div>
+      <span class="panel-label">日期</span>
+      <input type="date" id="from" aria-label="起始日期">
+      <span class="panel-label">→</span>
+      <input type="date" id="to" aria-label="结束日期">
+      <span id="searchHint" class="hint"></span>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="results">
+  <div class="res-head">
+    <h2>检索结果</h2>
+    <span class="res-count" id="resCount"></span>
+  </div>
+  <div id="resBody"></div>
+</section>
+
+<main class="wrap" id="boards"></main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="toplinks">
+      <a href="archive.html">归档检索</a>
+      <a href="report.json" target="_blank" rel="noopener">抓取报告</a>
+      <a href="data.json" target="_blank" rel="noopener">最新数据（JSON）</a>
+    </div>
+    <div>大瑞的信息网 · 数据来自公开 RSS 与公开榜单，仅存标题与摘要，版权归各原始来源所有。</div>
+    <p class="foot-tiny" id="footTiny"></p>
+  </div>
+</footer>
+
+</body>
+</html>

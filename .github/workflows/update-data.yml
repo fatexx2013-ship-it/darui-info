@@ -1,0 +1,85 @@
+name: 更新全球热点数据
+
+# 每日两更：UTC 00:00 / 12:00 = 北京时间 08:00 / 20:00
+on:
+  schedule:
+    - cron: "0 0 * * *"
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "仅抓取指定板块（逗号分隔，如 tech,buzz；留空为全部）"
+        required: false
+        default: ""
+      limit:
+        description: "每个数据源最多入库条数"
+        required: false
+        default: "20"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 配置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 抓取并生成站点数据
+        run: |
+          ARGS="--limit ${{ github.event.inputs.limit || '20' }}"
+          if [ -n "${{ github.event.inputs.only }}" ]; then
+            ARGS="$ARGS --only ${{ github.event.inputs.only }}"
+          fi
+          python3 scripts/update_data.py $ARGS
+
+      - name: 抓取结果摘要
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          r = json.loads(pathlib.Path("docs/report.json").read_text(encoding="utf-8"))
+          print("日期:", r["date"], "轮次:", r["round"])
+          print("源成功/失败:", r["sources_ok"], "/", r["sources_failed"])
+          print("本轮新增:", r["items_new_this_round"], " 当日累计:", r["items_total"])
+          print("板块分布:", r["counts"])
+          for s in r["sources"]:
+              if s["status"] != "ok":
+                  print("  -", s["status"], s["name"], s.get("message", ""))
+          PY
+
+      - name: 提交数据更新
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs
+          if git diff --cached --quiet; then
+            echo "没有数据变化，跳过提交"
+            exit 0
+          fi
+          git commit -m "chore(data): 自动更新全球热点数据 $(TZ=Asia/Shanghai date +'%Y-%m-%d %H:%M')"
+          git push
+
+      - name: 失败源提醒
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, sys
+          p = pathlib.Path("docs/report.json")
+          if not p.exists():
+              sys.exit(0)
+          r = json.loads(p.read_text(encoding="utf-8"))
+          failed = [s["name"] for s in r["sources"] if s["status"] == "failed"]
+          if failed:
+              print("::warning title=部分数据源抓取失败::" + "、".join(failed))
+          PY

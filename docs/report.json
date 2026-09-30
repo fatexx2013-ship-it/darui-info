@@ -1,0 +1,208 @@
+{
+  "generated_at": "2026-09-30T20:49:35+08:00",
+  "date": "2026-09-30",
+  "round": "20:00",
+  "sources_total": 21,
+  "sources_ok": 21,
+  "sources_failed": 0,
+  "items_total": 409,
+  "items_new_this_round": 410,
+  "counts": {
+    "geopolitics": 79,
+    "oddities": 50,
+    "domestic": 90,
+    "buzz": 90,
+    "tech": 100
+  },
+  "sources": [
+    {
+      "name": "BBC World",
+      "block": "geopolitics",
+      "type": "rss",
+      "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+      "status": "ok",
+      "count": 20,
+      "elapsed": 1.3
+    },
+    {
+      "name": "The Guardian World",
+      "block": "geopolitics",
+      "type": "rss",
+      "url": "https://www.theguardian.com/world/rss",
+      "status": "ok",
+      "count": 20,
+      "elapsed": 1.53
+    },
+    {
+      "name": "Al Jazeera",
+      "block": "geopolitics",
+      "type": "rss",
+      "url": "https://www.aljazeera.com/xml/rss/all.xml",
+      "status": "ok",
+      "count": 20,
+      "elapsed": 1.28
+    },
+    {
+      "name": "NYT World",
+      "block": "geopolitics",
+      "type": "rss",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+      "status": "ok",
+      "count": 20,
+      "elapsed": 1.48
+    },
+    {
+      "name": "Oddity Central",
+      "block": "oddities",
+      "type": "rss",
+      "url": "https://www.odditycentral.com/feed",
+      "status": "ok",
+      "count": 10,
+      "elapsed": 2.53
+    },
+    {
+      "name": "Atlas Obscura",
+      "block": "oddities",
+      "type": "rss",
+      "url": "https://www.atlasobscura.com/feeds/latest",
+      "status": "ok",
+      "count": 20,
+      "elapsed": 2.0
+    },
+    {
+      "name": "Boing Boing",
+      "block": "oddities",
+      "type": "rss",
+      "url": "https://boingboing.net/feed",
+      "status": "ok",
+      "count": 20,
+      "elapsed": 1.41
+    },
+    {
+      "name": "中国新闻网·滚动",
+      "block": "domestic",
+      "type": "rss",
+      "url": "https://www.chinanews.com.cn/rss/scroll-news.xml",
+      "status": "ok",
+      "count": 20,
+      "elapsed": 0.05
+    },
+    {
+      "name": "新华网·时政",
+      "block": "domestic",
+      "type": "rss",
+      "url": "http://www.xinhuanet.com/politics/news_politics.xml",
+      "status": "ok",
+      "count": 20,
+      "elapsed": 0.27
+    },
+    {
+      "name": "人民网·时政",
+      "block": "domestic",
+      "type": "rss",
+      "url": "http://www.people.com.cn/rss/politics.xml",
+      "status": "ok",
+      "count": 20,
+      "elapsed": 0.11
+    },
+    {
+      "name": "极客公园",
+      "block": "domestic",
+      "type": "rss",
+      "url": "https://www.geekpark.net/rss",
+      "status": "ok",
+      "count": 20,
+      "elapsed": 2.28
+    },
+    {
+      "name": "少数派",
+      "block": "domestic",
+      "type": "rss",
+      "url": "https://sspai.com/feed",
+      "status": "ok",
+      "count": 10,
+      "elapsed": 0.22
+    },
+    {
+      "name": "百度热搜",
+      "block": "buzz",
+      "type": "html",
+      "url": "https://top.baidu.com/board?tab=realtime",
+      "status": "ok",
+      "count": 30,
+      "elapsed": 0.14
+    },
+    {
+      "name": "今日头条热榜",
+      "block": "buzz",
+      "type": "api",
+      "url": "https://www.toutiao.com/hot-event/hot-board/?origin=toutiao_pc",
+      "status": "ok",
+      "count": 30,
+      "elapsed": 0.13
+    },
+    {
+      "name": "B站热搜",
+      "block": "buzz",
+      "type": "api",
+      "url": "https://api.bilibili.com/x/web-interface/search/square?limit=30",
+      "status": "ok",
+      "count": 30,
+      "elapsed": 0.16
+    },
+    {
+      "name": "Hacker News",
+      "block": "tech",
+      "type": "rss",
+      "url": "https://hnrss.org/frontpage",
+      "status": "ok",
+      "count": 20,
+      "elapsed": 1.76
+    },
+    {
+      "name": "TechCrunch",
+      "block": "tech",
+      "type": "rss",
+      "url": "https://techcrunch.com/feed/",
+      "status": "ok",
+      "count": 20,
+      "elapsed": 1.32
+    },
+    {
+      "name": "The Verge",
+      "block": "tech",
+      "type": "rss",
+      "url": "https://www.theverge.com/rss/index.xml",
+      "status": "ok",
+      "count": 10,
+      "elapsed": 1.13
+    },
+    {
+      "name": "Ars Technica",
+      "block": "tech",
+      "type": "rss",
+      "url": "https://feeds.arstechnica.com/arstechnica/index",
+      "status": "ok",
+      "count": 20,
+      "elapsed": 1.33
+    },
+    {
+      "name": "量子位",
+      "block": "tech",
+      "type": "rss",
+      "url": "https://www.qbitai.com/feed",
+      "status": "ok",
+      "count": 10,
+      "elapsed": 0.11
+    },
+    {
+      "name": "雷峰网",
+      "block": "tech",
+      "type": "rss",
+      "url": "https://www.leiphone.com/feed",
+      "status": "ok",
+      "count": 20,
+      "elapsed": 0.85
+    }
+  ]
+}

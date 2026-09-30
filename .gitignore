@@ -1,0 +1,15 @@
+# 构建产物：站点数据（由 scripts/update_data.py 生成，但需要被提交以便 Pages 展示）
+# 如果你希望数据不进版本库，取消下面注释，改为依赖 Actions 运行后再发布。
+# docs/data.json
+# docs/data.js
+# docs/report.json
+# docs/archive/
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+.idea/
+.vscode/
+*.swp
