@@ -1,68 +1,165 @@
 {
-  "version": "1.0",
-  "_comment": "数据源集中配置。type: rss | api | html；parser 可留空（按 type 自动选择），需要自定义解析时显式指定：baidu_hot / bilibili_hot / toutiao_hot / json_list。credibility 取值：一手官方 / 主流媒体 / 二手转载。per_source_limit 可选，默认取脚本 --limit。",
+  "version": "2.0",
+  "_comment": "数据源集中配置（v2：8 板块）。type: rss | api | html；parser 可留空（按 type 自动选择），需要自定义解析时显式指定：baidu_hot / bilibili_hot / toutiao_hot / json_list。credibility 取值：一手官方 / 主流媒体 / 二手转载。per_source_limit 可选，默认取脚本 --limit。",
   "sources": [
     {
-      "name": "BBC World",
-      "block": "geopolitics",
+      "name": "IT之家",
+      "block": "mobile",
       "type": "rss",
-      "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+      "url": "https://www.ithome.com/rss/",
       "credibility": "主流媒体",
-      "tags": ["国际", "时政"],
+      "tags": [
+        "手机",
+        "数码",
+        "新机"
+      ],
+      "per_source_limit": 25,
+      "filter_keywords": "@mobile",
       "enabled": true
     },
     {
-      "name": "The Guardian World",
-      "block": "geopolitics",
+      "name": "雷科技",
+      "block": "mobile",
       "type": "rss",
-      "url": "https://www.theguardian.com/world/rss",
+      "url": "https://www.leikeji.com/rss",
       "credibility": "主流媒体",
-      "tags": ["国际", "时政"],
-      "enabled": true
+      "tags": [
+        "手机",
+        "评测",
+        "新机"
+      ],
+      "per_source_limit": 20,
+      "enabled": true,
+      "filter_keywords": "@mobile"
     },
     {
-      "name": "Al Jazeera",
-      "block": "geopolitics",
+      "name": "cnBeta",
+      "block": "mobile",
       "type": "rss",
-      "url": "https://www.aljazeera.com/xml/rss/all.xml",
-      "credibility": "主流媒体",
-      "tags": ["国际", "时政"],
-      "enabled": true
-    },
-    {
-      "name": "NYT World",
-      "block": "geopolitics",
-      "type": "rss",
-      "url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
-      "credibility": "主流媒体",
-      "tags": ["国际", "时政"],
-      "enabled": true
-    },
-    {
-      "name": "Oddity Central",
-      "block": "oddities",
-      "type": "rss",
-      "url": "https://www.odditycentral.com/feed",
+      "url": "https://www.cnbeta.com.tw/backend.php",
       "credibility": "二手转载",
-      "tags": ["奇闻"],
+      "tags": [
+        "数码",
+        "消费电子"
+      ],
+      "per_source_limit": 15,
+      "filter_keywords": "@mobile",
       "enabled": true
     },
     {
-      "name": "Atlas Obscura",
-      "block": "oddities",
+      "name": "9to5Google",
+      "block": "mobile",
       "type": "rss",
-      "url": "https://www.atlasobscura.com/feeds/latest",
+      "url": "https://9to5google.com/feed/",
       "credibility": "主流媒体",
-      "tags": ["奇观", "探索"],
+      "tags": [
+        "安卓",
+        "手机",
+        "海外"
+      ],
+      "per_source_limit": 15,
       "enabled": true
     },
     {
-      "name": "Boing Boing",
-      "block": "oddities",
+      "name": "手机中国",
+      "block": "mobile",
       "type": "rss",
-      "url": "https://boingboing.net/feed",
+      "url": "https://www.cnmo.com/rss/news.xml",
+      "credibility": "主流媒体",
+      "tags": [
+        "手机",
+        "国内",
+        "新机"
+      ],
+      "per_source_limit": 15,
+      "enabled": true,
+      "filter_keywords": "@mobile"
+    },
+    {
+      "name": "GSMArena",
+      "block": "mobile",
+      "type": "rss",
+      "url": "https://www.gsmarena.com/rss-news-reviews.php3",
+      "credibility": "主流媒体",
+      "tags": [
+        "手机",
+        "参数",
+        "海外"
+      ],
+      "per_source_limit": 15,
+      "enabled": true,
+      "filter_keywords": "@mobile"
+    },
+    {
+      "name": "XDA Developers",
+      "block": "mobile",
+      "type": "rss",
+      "url": "https://www.xda-developers.com/feed/",
+      "credibility": "主流媒体",
+      "tags": [
+        "安卓",
+        "玩机",
+        "海外"
+      ],
+      "per_source_limit": 15,
+      "enabled": true,
+      "filter_keywords": "@mobile"
+    },
+    {
+      "name": "Google News·手机新机",
+      "block": "mobile",
+      "type": "rss",
+      "url": "https://news.google.com/rss/search?q=%E6%96%B0%E6%9C%BA%20%E5%8F%91%E5%B8%83&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
       "credibility": "二手转载",
-      "tags": ["奇事", "科技奇闻"],
+      "tags": [
+        "手机",
+        "新机",
+        "中文聚合"
+      ],
+      "per_source_limit": 15,
+      "enabled": true,
+      "filter_keywords": "@mobile"
+    },
+    {
+      "name": "Google News·天津",
+      "block": "tianjin",
+      "type": "rss",
+      "url": "https://news.google.com/rss/search?q=%E5%A4%A9%E6%B4%A5&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+      "credibility": "二手转载",
+      "tags": [
+        "天津",
+        "本地",
+        "中文聚合"
+      ],
+      "per_source_limit": 25,
+      "enabled": true
+    },
+    {
+      "name": "Google News·天津民生",
+      "block": "tianjin",
+      "type": "rss",
+      "url": "https://news.google.com/rss/search?q=%E5%A4%A9%E6%B4%A5%20%E6%B0%91%E7%94%9F&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+      "credibility": "二手转载",
+      "tags": [
+        "天津",
+        "民生",
+        "中文聚合"
+      ],
+      "per_source_limit": 20,
+      "enabled": true
+    },
+    {
+      "name": "Bing News·天津",
+      "block": "tianjin",
+      "type": "rss",
+      "url": "https://www.bing.com/news/search?q=%E5%A4%A9%E6%B4%A5&format=RSS",
+      "credibility": "二手转载",
+      "tags": [
+        "天津",
+        "本地",
+        "中文聚合"
+      ],
+      "per_source_limit": 20,
       "enabled": true
     },
     {
@@ -71,7 +168,10 @@
       "type": "rss",
       "url": "https://www.chinanews.com.cn/rss/scroll-news.xml",
       "credibility": "主流媒体",
-      "tags": ["国内", "民生"],
+      "tags": [
+        "国内",
+        "民生"
+      ],
       "enabled": true
     },
     {
@@ -80,7 +180,10 @@
       "type": "rss",
       "url": "https://a.jiemian.com/index.php?m=article&a=rss",
       "credibility": "主流媒体",
-      "tags": ["国内", "商业"],
+      "tags": [
+        "国内",
+        "商业"
+      ],
       "enabled": true
     },
     {
@@ -89,7 +192,10 @@
       "type": "rss",
       "url": "http://www.people.com.cn/rss/politics.xml",
       "credibility": "一手官方",
-      "tags": ["国内", "时政"],
+      "tags": [
+        "国内",
+        "时政"
+      ],
       "enabled": true
     },
     {
@@ -98,7 +204,10 @@
       "type": "rss",
       "url": "https://www.geekpark.net/rss",
       "credibility": "主流媒体",
-      "tags": ["国内", "产业"],
+      "tags": [
+        "国内",
+        "产业"
+      ],
       "enabled": true
     },
     {
@@ -107,7 +216,261 @@
       "type": "rss",
       "url": "https://sspai.com/feed",
       "credibility": "主流媒体",
-      "tags": ["国内", "产品"],
+      "tags": [
+        "国内",
+        "产品"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "BBC World",
+      "block": "geopolitics",
+      "type": "rss",
+      "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+      "credibility": "主流媒体",
+      "tags": [
+        "国际",
+        "时政"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "The Guardian World",
+      "block": "geopolitics",
+      "type": "rss",
+      "url": "https://www.theguardian.com/world/rss",
+      "credibility": "主流媒体",
+      "tags": [
+        "国际",
+        "时政"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "Al Jazeera",
+      "block": "geopolitics",
+      "type": "rss",
+      "url": "https://www.aljazeera.com/xml/rss/all.xml",
+      "credibility": "主流媒体",
+      "tags": [
+        "国际",
+        "时政"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "NYT World",
+      "block": "geopolitics",
+      "type": "rss",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
+      "credibility": "主流媒体",
+      "tags": [
+        "国际",
+        "时政"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "联合国新闻·中文",
+      "block": "conflict",
+      "type": "rss",
+      "url": "https://news.un.org/feed/subscribe/zh/news/all/rss.xml",
+      "credibility": "一手官方",
+      "tags": [
+        "冲突",
+        "人道",
+        "联合国"
+      ],
+      "per_source_limit": 20,
+      "enabled": true
+    },
+    {
+      "name": "ReliefWeb（联合国人道协调厅）",
+      "block": "conflict",
+      "type": "rss",
+      "url": "https://reliefweb.int/updates/rss.xml",
+      "credibility": "一手官方",
+      "tags": [
+        "冲突",
+        "危机",
+        "人道"
+      ],
+      "per_source_limit": 20,
+      "enabled": true
+    },
+    {
+      "name": "Crisis Group",
+      "block": "conflict",
+      "type": "rss",
+      "url": "https://www.crisisgroup.org/rss.xml",
+      "credibility": "主流媒体",
+      "tags": [
+        "冲突",
+        "智库",
+        "预警"
+      ],
+      "per_source_limit": 15,
+      "enabled": true
+    },
+    {
+      "name": "Defense News",
+      "block": "conflict",
+      "type": "rss",
+      "url": "https://www.defensenews.com/arc/outboundfeeds/rss/",
+      "credibility": "主流媒体",
+      "tags": [
+        "冲突",
+        "军事"
+      ],
+      "per_source_limit": 15,
+      "enabled": true
+    },
+    {
+      "name": "War on the Rocks",
+      "block": "conflict",
+      "type": "rss",
+      "url": "https://warontherocks.com/feed/",
+      "credibility": "二手转载",
+      "tags": [
+        "冲突",
+        "战略分析"
+      ],
+      "per_source_limit": 15,
+      "enabled": true
+    },
+    {
+      "name": "Google News·地缘冲突",
+      "block": "conflict",
+      "type": "rss",
+      "url": "https://news.google.com/rss/search?q=%E5%9C%B0%E7%BC%98%E5%86%B2%E7%AA%81%20OR%20%E6%88%98%E4%BA%89%20when:2d&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+      "credibility": "二手转载",
+      "tags": [
+        "冲突",
+        "战争",
+        "中文聚合"
+      ],
+      "per_source_limit": 20,
+      "enabled": true
+    },
+    {
+      "name": "Google News·中东局势",
+      "block": "conflict",
+      "type": "rss",
+      "url": "https://news.google.com/rss/search?q=%E4%B8%AD%E4%B8%9C%20%E5%B1%80%E5%8A%BF&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+      "credibility": "二手转载",
+      "tags": [
+        "冲突",
+        "中东",
+        "中文聚合"
+      ],
+      "per_source_limit": 15,
+      "enabled": true
+    },
+    {
+      "name": "Hacker News",
+      "block": "tech",
+      "type": "rss",
+      "url": "https://hnrss.org/frontpage",
+      "credibility": "二手转载",
+      "tags": [
+        "科技",
+        "社区"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "TechCrunch",
+      "block": "tech",
+      "type": "rss",
+      "url": "https://techcrunch.com/feed/",
+      "credibility": "主流媒体",
+      "tags": [
+        "科技",
+        "创投"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "The Verge",
+      "block": "tech",
+      "type": "rss",
+      "url": "https://www.theverge.com/rss/index.xml",
+      "credibility": "主流媒体",
+      "tags": [
+        "科技",
+        "消费电子"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "Ars Technica",
+      "block": "tech",
+      "type": "rss",
+      "url": "https://feeds.arstechnica.com/arstechnica/index",
+      "credibility": "主流媒体",
+      "tags": [
+        "科技",
+        "深度"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "量子位",
+      "block": "tech",
+      "type": "rss",
+      "url": "https://www.qbitai.com/feed",
+      "credibility": "主流媒体",
+      "tags": [
+        "AI",
+        "科技"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "雷峰网",
+      "block": "tech",
+      "type": "rss",
+      "url": "https://www.leiphone.com/feed",
+      "credibility": "主流媒体",
+      "tags": [
+        "AI",
+        "科技"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "Oddity Central",
+      "block": "oddities",
+      "type": "rss",
+      "url": "https://www.odditycentral.com/feed",
+      "credibility": "二手转载",
+      "tags": [
+        "奇闻"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "Atlas Obscura",
+      "block": "oddities",
+      "type": "rss",
+      "url": "https://www.atlasobscura.com/feeds/latest",
+      "credibility": "主流媒体",
+      "tags": [
+        "奇观",
+        "探索"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "Boing Boing",
+      "block": "oddities",
+      "type": "rss",
+      "url": "https://boingboing.net/feed",
+      "credibility": "二手转载",
+      "tags": [
+        "奇事",
+        "科技奇闻"
+      ],
       "enabled": true
     },
     {
@@ -117,7 +480,10 @@
       "parser": "baidu_hot",
       "url": "https://top.baidu.com/board?tab=realtime",
       "credibility": "二手转载",
-      "tags": ["热搜", "百度"],
+      "tags": [
+        "热搜",
+        "百度"
+      ],
       "per_source_limit": 30,
       "enabled": true
     },
@@ -128,7 +494,10 @@
       "parser": "toutiao_hot",
       "url": "https://www.toutiao.com/hot-event/hot-board/?origin=toutiao_pc",
       "credibility": "二手转载",
-      "tags": ["热榜", "头条"],
+      "tags": [
+        "热榜",
+        "头条"
+      ],
       "per_source_limit": 30,
       "enabled": true
     },
@@ -139,62 +508,11 @@
       "parser": "bilibili_hot",
       "url": "https://api.bilibili.com/x/web-interface/search/square?limit=30",
       "credibility": "二手转载",
-      "tags": ["热搜", "B站"],
+      "tags": [
+        "热搜",
+        "B站"
+      ],
       "per_source_limit": 30,
-      "enabled": true
-    },
-    {
-      "name": "Hacker News",
-      "block": "tech",
-      "type": "rss",
-      "url": "https://hnrss.org/frontpage",
-      "credibility": "二手转载",
-      "tags": ["科技", "社区"],
-      "enabled": true
-    },
-    {
-      "name": "TechCrunch",
-      "block": "tech",
-      "type": "rss",
-      "url": "https://techcrunch.com/feed/",
-      "credibility": "主流媒体",
-      "tags": ["科技", "创投"],
-      "enabled": true
-    },
-    {
-      "name": "The Verge",
-      "block": "tech",
-      "type": "rss",
-      "url": "https://www.theverge.com/rss/index.xml",
-      "credibility": "主流媒体",
-      "tags": ["科技", "消费电子"],
-      "enabled": true
-    },
-    {
-      "name": "Ars Technica",
-      "block": "tech",
-      "type": "rss",
-      "url": "https://feeds.arstechnica.com/arstechnica/index",
-      "credibility": "主流媒体",
-      "tags": ["科技", "深度"],
-      "enabled": true
-    },
-    {
-      "name": "量子位",
-      "block": "tech",
-      "type": "rss",
-      "url": "https://www.qbitai.com/feed",
-      "credibility": "主流媒体",
-      "tags": ["AI", "科技"],
-      "enabled": true
-    },
-    {
-      "name": "雷峰网",
-      "block": "tech",
-      "type": "rss",
-      "url": "https://www.leiphone.com/feed",
-      "credibility": "主流媒体",
-      "tags": ["AI", "科技"],
       "enabled": true
     }
   ]

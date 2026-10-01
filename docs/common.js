@@ -140,6 +140,18 @@
     (meta.blocks || []).forEach(function (b) { BLOCK_NAMES[b.key] = b.name; });
   }
 
+  /* ---------- 板块标签栏（v2：标签式导航共用） ---------- */
+  function tabsHTML(blocks, currentKey, opts) {
+    opts = opts || {};
+    return (blocks || []).map(function (b) {
+      var lead = (opts.leadKey && b.key === opts.leadKey) ? ' lead' : '';
+      var cnt = (b.count == null) ? '' : '<span class="t-count">' + esc(b.count) + '</span>';
+      var on = (b.key === currentKey);
+      return '<button type="button" class="tab' + lead + (on ? ' active' : '') + '" data-block="' + esc(b.key) + '"' +
+        ' role="tab" aria-selected="' + (on ? 'true' : 'false') + '">' + esc(b.name) + cnt + '</button>';
+    }).join('');
+  }
+
   /* ---------- 检索 ---------- */
   function matchItem(it, f) {
     if (f.blocks && f.blocks.length && f.blocks.indexOf(it.block) === -1) return false;
@@ -166,6 +178,7 @@
   WIS.latestItems = latestItems; WIS.snapshotItems = snapshotItems;
   WIS.setBlockNames = setBlockNames; WIS.blockNames = BLOCK_NAMES;
   WIS.matchItem = matchItem; WIS.inRange = inRange;
+  WIS.tabsHTML = tabsHTML;
   WIS.CRED_CLASS = credClass;
 
   window.WIS = WIS;

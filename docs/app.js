@@ -1,21 +1,33 @@
-/* 首页：板块渲染 + 检索（最新一期 / 含历史归档） */
+/* 首页：顶部板块标签切换 + 板块内检索（最新一期 / 含历史归档） */
 (function () {
   'use strict';
+  var WIS = window.WIS;
   var data = window.WIS_DATA || { meta: {}, blocks: [] };
   var index = window.WIS_ARCHIVE_INDEX || { days: [] };
   var meta = data.meta || {};
-  var WIS = window.WIS;
 
   WIS.setBlockNames(meta);
+
+  /* 板块清单（顺序取 meta.blocks，即配置里的展示顺序；首个板块为默认落地板块） */
+  var metaBlocks = meta.blocks || [];
+  var byKey = {};
+  (data.blocks || []).forEach(function (b) { byKey[b.key] = b; });
+  var blocks = metaBlocks.map(function (b) {
+    var d = byKey[b.key] || {};
+    return { key: b.key, name: b.name, desc: b.desc || d.desc || '', count: d.count || (d.items || []).length || 0 };
+  });
+
+  var current = blocks.length ? blocks[0].key : '';
+  var scope = 'latest';
 
   /* ---------------- 顶部信息 ---------------- */
   function renderHero() {
     var host = WIS.$('#heroMeta');
     var archived = (index.days || []).length;
     var chips = [
-      '数据时间 ' + (WIS.fmtFull(meta.generatedAt) || '—') ,
+      '数据时间 ' + (WIS.fmtFull(meta.generatedAt) || '—'),
       '今日轮次 ' + ((meta.rounds || []).join(' / ') || '—'),
-      '最新一期 ' + (meta.total || 0) + ' 条',
+      '最新一期 ' + (meta.total || 0) + ' 条 · ' + blocks.length + ' 板块',
       '归档 ' + archived + ' 天 / ' + (index.total_items || 0) + ' 条'
     ];
     host.innerHTML = chips.map(function (t) { return '<span class="chip">' + WIS.esc(t) + '</span>'; }).join('') +
@@ -25,31 +37,50 @@
       ' · 归档 ' + (index.total_days || 0) + ' 天 / ' + (index.total_items || 0) + ' 条';
   }
 
-  /* ---------------- 板块渲染 ---------------- */
-  function renderBoards() {
-    var host = WIS.$('#boards');
-    var blocks = data.blocks || [];
+  /* ---------------- 标签栏 ---------------- */
+  function renderTabs() {
+    var host = WIS.$('#boardTabs');
+    host.innerHTML = WIS.tabsHTML(blocks, current, { leadKey: blocks.length ? blocks[0].key : '' });
+    var active = WIS.$('.tab.active', host);
+    if (active && active.offsetLeft > host.clientWidth - 90) {
+      host.scrollLeft = Math.max(0, active.offsetLeft - 60);
+    } else {
+      host.scrollLeft = 0;
+    }
+  }
+
+  function blockOf(key) { return byKey[key] || {}; }
+
+  /* ---------------- 板块内容 ---------------- */
+  function renderBoard() {
+    var host = WIS.$('#boardView');
+    var b = blockOf(current);
+    var name = (blocks.filter(function (x) { return x.key === current; })[0] || {}).name || current;
+    var items = (b.items || []).map(function (it) {
+      var c = {}; for (var k in it) if (Object.prototype.hasOwnProperty.call(it, k)) c[k] = it[k];
+      c.blockName = name; return c;
+    });
     if (!blocks.length) {
-      host.innerHTML = '<div class="empty">暂无数据：请先运行 <code>python3 scripts/update_data.py</code> 生成站点数据。</div>';
+      host.innerHTML = '<div class="board-empty">暂无数据：请先运行 <code>python3 scripts/update_data.py</code> 生成站点数据。</div>';
       return;
     }
-    host.innerHTML = blocks.map(function (b, i) {
-      return '<section class="board" id="board-' + WIS.esc(b.key) + '">' +
-        '<div class="board-head">' +
-        '<h2><span class="idx">' + (i < 9 ? '0' : '') + (i + 1) + '</span>' + WIS.esc(b.name) +
-        '<span class="cnt">' + (b.count || (b.items || []).length) + ' 条</span></h2>' +
-        '<p class="board-sub">' + WIS.esc(b.desc || '') + '</p>' +
-        '</div>' +
-        WIS.cardsHTML((b.items || []).map(function (it) {
-          var c = {}; for (var k in it) if (Object.prototype.hasOwnProperty.call(it, k)) c[k] = it[k];
-          c.blockName = b.name; return c;
-        }), { showBlock: false, showDate: false }) +
-        '</section>';
-    }).join('');
+    host.innerHTML = '<section class="board" id="board-' + WIS.esc(current) + '">' +
+      '<div class="board-head">' +
+      '<h2>' + WIS.esc(name) + '<span class="cnt">' + items.length + ' 条</span></h2>' +
+      '<p class="board-sub">' + WIS.esc(b.desc || '') + '</p>' +
+      '</div>' +
+      (items.length ? WIS.cardsHTML(items, { showBlock: false, showDate: false })
+                    : '<div class="empty">该板块本期暂无条目，可切换其他板块或稍后重试。</div>') +
+      '</section>';
+  }
+
+  function updateScopeNote() {
+    var name = (blocks.filter(function (x) { return x.key === current; })[0] || {}).name || '—';
+    WIS.$('#scopeNote').innerHTML = '检索范围：<b>' + WIS.esc(name) + '</b> · ' +
+      (scope === 'latest' ? '仅最新一期' : '含历史归档');
   }
 
   /* ---------------- 检索 ---------------- */
-  var scope = 'latest';
   var scopeSeg = WIS.$('#scopeSeg');
 
   scopeSeg.addEventListener('click', function (e) {
@@ -58,19 +89,25 @@
     scope = btn.getAttribute('data-scope');
     WIS.$$('button', scopeSeg).forEach(function (b) { b.classList.remove('active'); });
     btn.classList.add('active');
+    updateScopeNote();
   });
 
-  WIS.$$('[data-block-chk]').forEach(function (label) {
-    var box = label.querySelector('input');
-    box.addEventListener('change', function () {
-      label.classList.toggle('on', box.checked);
-    });
+  WIS.$('#boardTabs').addEventListener('click', function (e) {
+    var tab = e.target.closest('.tab');
+    if (!tab) return;
+    current = tab.getAttribute('data-block');
+    WIS.$$('.tab', this).forEach(function (t) { t.classList.toggle('active', t === tab); });
+    if (tab.offsetLeft > this.clientWidth - 90) this.scrollLeft = Math.max(0, tab.offsetLeft - 60);
+    hideResults();
+    status('');
+    renderBoard();
+    updateScopeNote();
   });
 
   function readFilters() {
     return {
       kw: (WIS.$('#kw').value || '').trim(),
-      blocks: WIS.$$('[data-block-chk] input:checked').map(function (i) { return i.value; }),
+      blocks: current ? [current] : [],
       from: WIS.$('#from').value || '',
       to: WIS.$('#to').value || ''
     };
@@ -81,10 +118,17 @@
     el.innerHTML = text ? '<span class="' + (isErr ? 'err' : '') + '">' + WIS.esc(text) + '</span>' : '';
   }
 
+  function hideResults() {
+    WIS.$('#results').classList.add('hidden');
+    WIS.$('#boardView').classList.remove('hidden');
+  }
+
   function showResults(items, note) {
-    WIS.$('#resCount').textContent = items.length + ' 条' + (note ? ' · ' + note : '');
-    WIS.$('#resBody').innerHTML = WIS.cardsHTML(items, { showBlock: true, showDate: true });
-    WIS.$('#results').classList.add('on');
+    var name = (blocks.filter(function (x) { return x.key === current; })[0] || {}).name || '';
+    WIS.$('#resCount').textContent = items.length + ' 条 · 板块 ' + name + (note ? ' · ' + note : '');
+    WIS.$('#resBody').innerHTML = WIS.cardsHTML(items, { showBlock: false, showDate: true });
+    WIS.$('#boardView').classList.add('hidden');
+    WIS.$('#results').classList.remove('hidden');
     WIS.$('#results').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
@@ -108,9 +152,8 @@
 
   function doSearch() {
     var f = readFilters();
-    if (!f.kw && !f.blocks.length && !f.from && !f.to) {
-      WIS.$('#results').classList.remove('on');
-      status('请输入关键词或选择条件后再检索（空条件将展示全部条目，略去以免刷屏）');
+    if (!f.kw && !f.from && !f.to) {
+      status('请在当前板块内输入关键词，或展开「日期区间」后再检索', true);
       return;
     }
     if (scope === 'latest') {
@@ -133,16 +176,18 @@
 
   WIS.$('#btnSearch').addEventListener('click', doSearch);
   WIS.$('#kw').addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
+  WIS.$('#btnBack').addEventListener('click', function () { hideResults(); status(''); WIS.$('#boardTabs').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
   WIS.$('#btnReset').addEventListener('click', function () {
     WIS.$('#kw').value = '';
     WIS.$('#from').value = '';
     WIS.$('#to').value = '';
-    WIS.$$('[data-block-chk] input').forEach(function (i) { i.checked = false; });
-    WIS.$$('[data-block-chk]').forEach(function (l) { l.classList.remove('on'); });
-    WIS.$('#results').classList.remove('on');
+    hideResults();
     status('');
+    renderBoard();
   });
 
   renderHero();
-  renderBoards();
+  renderTabs();
+  renderBoard();
+  updateScopeNote();
 })();

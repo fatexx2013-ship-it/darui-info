@@ -38,13 +38,16 @@ CST = timezone(timedelta(hours=8))
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
 
-# 板块固定顺序与展示名（与规格文档保持一致）
+# 板块固定顺序与展示名（v2 规格：8 板块，顺序即前端标签展示顺序，首个为默认落地板块）
 BLOCKS = [
-    ("geopolitics", "国际观察", "公开主流媒体的国际时政与地缘动态（站内自用，不进抖音选题）"),
-    ("oddities", "奇闻怪事", "全球离奇事件、自然奇观与科技奇事"),
-    ("domestic", "国内热点", "民生、政策与产业动态"),
-    ("buzz", "网络舆论", "微博热搜 / 知乎热榜等榜单聚合"),
+    ("mobile", "手机动态", "新机发布、参数规格与新功能特性（用户最关注，默认落地板块）"),
+    ("tianjin", "天津新闻", "天津本地民生、政策与城建动态（常驻地视角）"),
+    ("domestic", "国内新闻", "国内民生、政策与产业动态"),
+    ("geopolitics", "国际新闻", "国际时政与全球动态"),
+    ("conflict", "地缘冲突", "国际冲突、战争与安全局势专题"),
     ("tech", "科技前沿", "与 AI 站互补，抖音视频主力选题来源"),
+    ("oddities", "奇闻怪事", "全球离奇事件、自然奇观与科技奇事"),
+    ("buzz", "网络舆论", "百度热搜 / 头条热榜 / B站热搜榜单聚合"),
 ]
 BLOCK_KEYS = [b[0] for b in BLOCKS]
 BLOCK_MAP = {b[0]: {"key": b[0], "name": b[1], "desc": b[2]} for b in BLOCKS}
@@ -454,6 +457,33 @@ def load_json(path, default=None):
 
 # ---------------------------------------------------------------- 主流程
 
+def match_keywords(row, keywords):
+    """按源配置的 filter_keywords 过滤：标题或摘要命中任一关键词即保留（大小写不敏感）。"""
+    hay = ((row.get("title") or "") + " " + (row.get("summary") or "")).lower()
+    return any(str(k).lower() in hay for k in keywords)
+
+
+# 「手机动态」板块相关度关键词预设：供综合类数码源（IT之家 / 手机中国 / 雷科技 / XDA /
+# GSMArena / Google News 手机新机）过滤掉与手机无关的条目，配置中写 "@mobile" 即可引用。
+MOBILE_KEYWORDS = [
+    "手机", "新机", "旗舰", "折叠", "屏下", "芯片", "骁龙", "天玑", "鸿蒙", "安卓", "影像", "摄像头",
+    "电池", "快充", "系统更新", "平板", "手表", "耳机", "苹果", "华为", "小米", "红米", "荣耀",
+    "一加", "真我", "努比亚", "魅族", "摩托罗拉", "传音", "vivo", "oppo",
+    "iphone", "ipad", "ios", "android", "galaxy", "pixel", "xiaomi", "redmi", "oneplus", "oppo",
+    "vivo", "honor", "huawei", "samsung", "snapdragon", "dimensity", "mediatek", "exynos", "tensor",
+    "foldable", "smartphone", "smartwatch", "wearable", "tablet", "chipset", "harmonyos", "hyperos",
+    "one ui", "magicos", "coloros", "originos", "nothing phone", "moto",
+]
+
+
+def source_keywords(src):
+    """取源的关键词过滤配置；支持 "@mobile" 预设。"""
+    kws = src.get("filter_keywords") or []
+    if isinstance(kws, str):
+        return MOBILE_KEYWORDS if kws.strip().lower() == "@mobile" else []
+    return kws
+
+
 def fetch_sources(sources, limit, only, focus):
     """抓取全部数据源，返回 (按板块分组的条目, 报告)。"""
     grouped = {k: [] for k in BLOCK_KEYS}
@@ -483,6 +513,9 @@ def fetch_sources(sources, limit, only, focus):
         try:
             raw = http_get(src["url"])
             rows = parse_source(raw, src)
+            kws = source_keywords(src)
+            if kws:
+                rows = [r for r in rows if match_keywords(r, kws)]
             cap = int(src.get("per_source_limit") or limit)
             rows = rows[:cap]
             added = 0

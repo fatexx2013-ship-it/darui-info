@@ -1,17 +1,36 @@
-/* 归档页：日期浏览 + 跨归档检索 */
+/* 归档页：板块标签切换 + 日期浏览 + 跨归档检索 */
 (function () {
   'use strict';
   var WIS = window.WIS;
+  var data = window.WIS_DATA || { meta: {}, blocks: [] };
   var index = window.WIS_ARCHIVE_INDEX || { days: [] };
   var days = index.days || [];
   var currentDate = days.length ? days[0].date : '';
   var loaded = {};
 
-  WIS.setBlockNames((window.WIS_DATA || {}).meta || {});
+  WIS.setBlockNames(data.meta || {});
+
+  var metaBlocks = (data.meta || {}).blocks || [];
+  var blocks = metaBlocks.map(function (b) { return { key: b.key, name: b.name }; });
+  var blockName = {};
+  blocks.forEach(function (b) { blockName[b.key] = b.name; });
+  var current = '';   // '' = 全部板块
 
   function status(text, isErr) {
     var el = WIS.$('#searchHint');
     el.innerHTML = text ? '<span class="' + (isErr ? 'err' : '') + '">' + WIS.esc(text) + '</span>' : '';
+  }
+
+  function updateScopeNote() {
+    WIS.$('#scopeNote').innerHTML = '检索范围：<b>' + WIS.esc(current ? blockName[current] : '全部板块') + '</b>';
+  }
+
+  /* ---------------- 板块标签 ---------------- */
+  function renderTabs() {
+    var list = [{ key: '', name: '全部', count: index.total_items || 0 }].concat(blocks.map(function (b) {
+      return { key: b.key, name: b.name, count: null };
+    }));
+    WIS.$('#boardTabs').innerHTML = WIS.tabsHTML(list, current, {});
   }
 
   /* ---------------- 日期列表 ---------------- */
@@ -31,10 +50,9 @@
     }).join('');
   }
 
-  /* ---------------- 单日视图 ---------------- */
+  /* ---------------- 单日视图（按所选板块过滤） ---------------- */
   function renderDay(date) {
     var view = WIS.$('#dayView');
-    var meta = days.filter(function (d) { return d.date === date; })[0] || {};
     view.innerHTML = '<div class="skeleton">正在载入 ' + WIS.esc(date) + ' …</div>';
     WIS.loadSnapshot(date).then(function (snap) {
       loaded[date] = snap;
@@ -43,11 +61,13 @@
         var k = it.block || 'other';
         (byBlock[k] = byBlock[k] || []).push(it);
       });
-      var order = ['geopolitics', 'oddities', 'domestic', 'buzz', 'tech'];
-      var rest = Object.keys(byBlock).filter(function (k) { return order.indexOf(k) === -1; });
-      order = order.concat(rest);
+      var order = blocks.map(function (b) { return b.key; });
+      Object.keys(byBlock).forEach(function (k) { if (order.indexOf(k) === -1) order.push(k); });
 
-      var body = order.filter(function (k) { return byBlock[k]; }).map(function (k) {
+      var body = order.filter(function (k) {
+        if (!byBlock[k]) return false;
+        return !current || current === k;
+      }).map(function (k) {
         var items = byBlock[k].map(function (it) {
           var c = {}; for (var q in it) if (Object.prototype.hasOwnProperty.call(it, q)) c[q] = it[q];
           c.blockName = WIS.blockNames[k] || k;
@@ -66,7 +86,7 @@
           return '<span class="round">' + WIS.esc(r) + '</span>';
         }).join('') + '</span>' +
         '<span class="hint" style="margin:0">更新 ' + WIS.esc(WIS.fmtFull(snap.updated_at) || '—') + '</span>' +
-        '</div>' + (body || '<div class="empty">该日无条目</div>');
+        '</div>' + (body || '<div class="empty">该板块当日无条目</div>');
     }).catch(function (err) {
       view.innerHTML = '<div class="empty err">载入失败：' + WIS.esc(err.message) + '</div>';
     });
@@ -74,22 +94,20 @@
 
   /* ---------------- 检索 ---------------- */
   function readFilters() {
-    var groups = { geopolitics: '国际观察', oddities: '奇闻怪事', domestic: '国内热点', buzz: '网络舆论', tech: '科技前沿' };
-    var blocks = WIS.$$('[data-block-chk] input:checked').map(function (i) { return i.value; });
+    var dayOnly = WIS.$('#inDayOnly').querySelector('input').checked;
     return {
       kw: (WIS.$('#kw').value || '').trim(),
-      blocks: blocks,
-      blockNames: blocks.map(function (b) { return groups[b] || b; }),
-      from: WIS.$('#from').value || '',
-      to: WIS.$('#to').value || '',
-      dayOnly: WIS.$('#inDayOnly').querySelector('input').checked
+      blocks: current ? [current] : [],
+      from: dayOnly ? '' : (WIS.$('#from').value || ''),
+      to: dayOnly ? '' : (WIS.$('#to').value || ''),
+      dayOnly: dayOnly
     };
   }
 
   function doSearch() {
     var f = readFilters();
-    if (!f.kw && !f.blocks.length && !f.from && !f.to) {
-      status('请至少输入关键词或选择条件', true);
+    if (!f.kw && !f.from && !f.to) {
+      status('请输入关键词，或取消「仅检索当前选中日期」后指定日期区间', true);
       return;
     }
     var targets = f.dayOnly
@@ -124,10 +142,10 @@
       var items = all.filter(function (it) { return WIS.matchItem(it, f); });
       items.sort(function (a, b) { return (b.date || '') < (a.date || '') ? -1 : 1; });
       status('');
-      WIS.$('#resCount').textContent = items.length + ' 条 · 范围 ' + targets.length + ' 天' +
-        (f.blocks.length ? ' · 板块 ' + f.blockNames.join('/') : '');
-      WIS.$('#resBody').innerHTML = WIS.cardsHTML(items, { showBlock: true, showDate: true });
-      WIS.$('#results').classList.add('on');
+      WIS.$('#resCount').textContent = items.length + ' 条 · 范围 ' + targets.length + ' 天 · 板块 ' +
+        (current ? blockName[current] : '全部');
+      WIS.$('#resBody').innerHTML = WIS.cardsHTML(items, { showBlock: !current, showDate: true });
+      WIS.$('#results').classList.remove('hidden');
       WIS.$('#results').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }).catch(function (err) {
       status('检索失败：' + err.message, true);
@@ -135,19 +153,25 @@
   }
 
   /* ---------------- 事件 ---------------- */
+  WIS.$('#boardTabs').addEventListener('click', function (e) {
+    var tab = e.target.closest('.tab');
+    if (!tab) return;
+    current = tab.getAttribute('data-block');
+    WIS.$$('.tab', this).forEach(function (t) { t.classList.toggle('active', t === tab); });
+    if (tab.offsetLeft > this.clientWidth - 90) this.scrollLeft = Math.max(0, tab.offsetLeft - 60);
+    status('');
+    updateScopeNote();
+    if (currentDate) renderDay(currentDate);
+  });
+
   WIS.$('#dayList').addEventListener('click', function (e) {
     var btn = e.target.closest('.day-btn');
     if (!btn) return;
     currentDate = btn.getAttribute('data-date');
     WIS.$$('.day-btn').forEach(function (b) { b.classList.toggle('active', b === btn); });
-    WIS.$('#results').classList.remove('on');
+    WIS.$('#results').classList.add('hidden');
     status('');
     renderDay(currentDate);
-  });
-
-  WIS.$$('[data-block-chk]').forEach(function (label) {
-    var box = label.querySelector('input');
-    box.addEventListener('change', function () { label.classList.toggle('on', box.checked); });
   });
 
   WIS.$('#inDayOnly').addEventListener('change', function () {
@@ -157,15 +181,19 @@
 
   WIS.$('#btnSearch').addEventListener('click', doSearch);
   WIS.$('#kw').addEventListener('keydown', function (e) { if (e.key === 'Enter') doSearch(); });
+  WIS.$('#btnBack').addEventListener('click', function () {
+    WIS.$('#results').classList.add('hidden');
+    WIS.$('#dayView').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
   WIS.$('#btnClear').addEventListener('click', function () {
     WIS.$('#kw').value = ''; WIS.$('#from').value = ''; WIS.$('#to').value = '';
-    WIS.$$('[data-block-chk] input').forEach(function (i) { i.checked = false; });
-    WIS.$$('[data-block-chk]').forEach(function (l) { l.classList.remove('on'); });
-    WIS.$('#results').classList.remove('on');
+    WIS.$('#results').classList.add('hidden');
     status('');
   });
 
+  renderTabs();
   renderDayList();
+  updateScopeNote();
   if (currentDate) renderDay(currentDate);
   else WIS.$('#dayView').innerHTML = '<div class="empty">暂无归档数据，请先运行 <code>python3 scripts/update_data.py</code>。</div>';
 })();

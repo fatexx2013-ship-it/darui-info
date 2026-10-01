@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>归档检索 · 大瑞的信息网</title>
-<meta name="description" content="按日期浏览与跨归档关键词检索：大瑞的信息网历史快照。">
+<meta name="description" content="按板块标签切换 + 按日期浏览 + 跨归档关键词检索：大瑞的信息网历史快照。">
 <link rel="stylesheet" href="styles.css">
 <script src="data.js" defer></script>
 <script src="archive/index.js" defer></script>
@@ -30,40 +30,44 @@
 
 <section class="hero wrap" style="padding:40px 0 12px;text-align:left">
   <h1 style="font-size:clamp(24px,4vw,38px)">归档<span class="grad">检索</span></h1>
-  <p class="sub">按日期浏览每日快照，或在全部归档中按关键词 / 板块 / 日期范围检索。
+  <p class="sub">顶部标签选板块，「全部」可看当天全量；也可在全部归档中按关键词 / 日期范围检索。
      同一日内多次抓取的条目已合并去重，来源与首发时间保留在条目中。</p>
 </section>
+
+<div class="tabs-wrap">
+  <div class="wrap">
+    <div class="tabs" id="boardTabs" role="tablist" aria-label="板块切换"></div>
+  </div>
+</div>
 
 <section class="wrap" id="searchPanel">
   <div class="panel">
     <div class="panel-row">
-      <input type="text" id="kw" placeholder="关键词检索：标题 / 摘要 / 来源">
+      <input type="text" id="kw" placeholder="在当前选中板块内检索：标题 / 摘要 / 来源">
       <button class="btn" id="btnSearch">跨归档检索</button>
       <button class="btn ghost" id="btnClear">清空条件</button>
     </div>
     <div class="panel-row">
-      <span class="panel-label">板块</span>
-      <label class="chk" data-block-chk="geopolitics"><input type="checkbox" value="geopolitics">国际观察</label>
-      <label class="chk" data-block-chk="oddities"><input type="checkbox" value="oddities">奇闻怪事</label>
-      <label class="chk" data-block-chk="domestic"><input type="checkbox" value="domestic">国内热点</label>
-      <label class="chk" data-block-chk="buzz"><input type="checkbox" value="buzz">网络舆论</label>
-      <label class="chk" data-block-chk="tech"><input type="checkbox" value="tech">科技前沿</label>
-    </div>
-    <div class="panel-row">
-      <span class="panel-label">日期</span>
-      <input type="date" id="from" aria-label="起始日期">
-      <span class="panel-label">→</span>
-      <input type="date" id="to" aria-label="结束日期">
       <label class="chk" id="inDayOnly"><input type="checkbox" checked>仅检索当前选中日期</label>
+      <details class="fold" id="advFold">
+        <summary>日期区间</summary>
+        <div class="fold-body">
+          <input type="date" id="from" aria-label="起始日期">
+          <span class="panel-label">→</span>
+          <input type="date" id="to" aria-label="结束日期">
+        </div>
+      </details>
       <span id="searchHint" class="hint"></span>
     </div>
+    <p class="scope-note" id="scopeNote"></p>
   </div>
 </section>
 
-<section class="wrap" id="results">
+<section class="wrap hidden" id="results">
   <div class="res-head">
     <h2>检索结果</h2>
     <span class="res-count" id="resCount"></span>
+    <button class="btn ghost" id="btnBack" style="margin-left:auto">返回日期浏览</button>
   </div>
   <div id="resBody"></div>
 </section>
