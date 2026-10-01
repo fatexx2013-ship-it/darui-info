@@ -51,16 +51,22 @@
     var date = itemDate(it);
     var when = it.published_at ? fmtWhen(it.published_at) : (fmtFull(it.first_seen) + ' 入库');
     var url = it.source_url || '';
+    /* 外文条目优先展示中文译文，原文以小字附在标题下方，便于溯源核对 */
+    var titleZh = it.title_zh || '';
+    var hasZh = !!titleZh && titleZh !== it.title;
+    var titleText = hasZh ? titleZh : it.title;
     var titleHtml = url
-      ? '<a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(it.title) + '</a>'
-      : esc(it.title);
+      ? '<a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(titleText) + '</a>'
+      : esc(titleText);
+    var origHtml = hasZh ? '<p class="orig" title="原文标题">' + esc(it.title) + '</p>' : '';
     var blk = opts.showBlock && it.blockName ? '<span class="tag blk">' + esc(it.blockName) + '</span>' : '';
     var dateTag = opts.showDate && date ? '<span class="tag">' + esc(date) + '</span>' : '';
-    var sum = it.summary ? '<p class="sum">' + esc(it.summary) + '</p>' : '';
+    var sumText = it.summary_zh || it.summary || '';
+    var sum = sumText ? '<p class="sum">' + esc(sumText) + '</p>' : '';
     var srcLink = url ? '<a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(it.source_name || '原始链接') + '</a>' : esc(it.source_name || '');
     return '<article class="card item-card" data-id="' + esc(it.id) + '" data-block="' + esc(it.block || '') +
       '" data-date="' + esc(date) + '">' +
-      '<h3>' + titleHtml + '</h3>' + sum +
+      '<h3>' + titleHtml + '</h3>' + origHtml + sum +
       '<div class="src">' +
       '<span class="tag ' + credCls + '">' + esc(cred) + '</span>' + blk + dateTag +
       '<span class="src-out">' + srcLink + '</span>' +
@@ -156,7 +162,8 @@
   function matchItem(it, f) {
     if (f.blocks && f.blocks.length && f.blocks.indexOf(it.block) === -1) return false;
     if (f.kw) {
-      var hay = ((it.title || '') + ' ' + (it.summary || '') + ' ' + (it.source_name || '')).toLowerCase();
+      var hay = ((it.title || '') + ' ' + (it.title_zh || '') + ' ' + (it.summary || '') + ' ' +
+        (it.summary_zh || '') + ' ' + (it.source_name || '')).toLowerCase();
       if (f.kw.toLowerCase().split(/\s+/).some(function (w) { return w && hay.indexOf(w) === -1; })) return false;
     }
     var d = itemDate(it) || it.date || '';

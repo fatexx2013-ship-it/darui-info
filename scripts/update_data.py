@@ -146,6 +146,128 @@ def sort_key(item):
     return (item.get("published_at") or item.get("first_seen") or "")
 
 
+# ---------------------------------------------------------------- 外文自动翻译
+# 目标：外文源（国际新闻 / 地缘冲突 / 科技外媒等）条目附带中文译文，与 AI 站口径一致。
+# 通道：主 Google 免密端点（质量好），备 MyMemory 免费接口；两者均失败则保留原文，绝不阻断抓取。
+# 产物：条目新增 title_zh / summary_zh 字段（原文 title / summary 完整保留，便于溯源核对）。
+
+CJK_RE = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\u3040-\u30ff]")
+LATIN_RE = re.compile(r"[A-Za-z]")
+
+TRANS_CACHE = {}                       # 原文 -> 译文（空串表示本轮翻译失败）
+TRANS_STATS = {"skip": 0, "hit": 0, "ok": 0, "fail": 0, "items": 0}
+TRANS_ENABLED = True
+TRANS_LIMIT = 0                        # 本轮最多翻译条数，0 = 不限
+TRANS_DELAY = 0.25                     # 相邻翻译请求的最小间隔（秒）
+_LAST_CALL = [0.0]
+
+
+def is_foreign(text):
+    """判断是否为需要翻译的外文：已含中文（CJK 占比 > 15%）则跳过；无拉丁字母（纯数字/符号）也跳过。"""
+    s = (text or "").strip()
+    if len(s) < 3:
+        return False
+    if CJK_RE.search(s) and len(CJK_RE.findall(s)) > len(s) * 0.15:
+        return False
+    return len(LATIN_RE.findall(s)) >= 3
+
+
+def _throttle():
+    wait = _LAST_CALL[0] + TRANS_DELAY - time.time()
+    if wait > 0:
+        time.sleep(wait)
+    _LAST_CALL[0] = time.time()
+
+
+def _via_google(text):
+    """Google 免密端点，返回中文译文；失败抛异常。"""
+    url = ("https://translate.googleapis.com/translate_a/single"
+           "?client=gtx&sl=auto&tl=zh-CN&dt=t&q=" + urllib.parse.quote(text[:480]))
+    data = json.loads(http_get(url, timeout=15, retries=1).decode("utf-8", "replace"))
+    segs = (data[0] if isinstance(data, list) and data else None) or []
+    out = "".join(seg[0] for seg in segs if isinstance(seg, list) and seg and seg[0])
+    return out.strip()
+
+
+def _via_mymemory(text):
+    """MyMemory 免费接口（与 AI 站同源），返回中文译文；失败抛异常。"""
+    url = ("https://api.mymemory.translated.net/get?q=" +
+           urllib.parse.quote(text[:450]) + "&langpair=en|zh-CN")
+    info = json.loads(http_get(url, timeout=15, retries=1).decode("utf-8", "replace"))
+    out = ((info.get("responseData") or {}).get("translatedText") or "").strip()
+    if re.search(r"MYMEMORY WARNING|INVALID", out, re.I):
+        return ""
+    return out
+
+
+def translate(text):
+    """外文 -> 中文；不需翻译或翻译失败时返回空串（调用方回退原文展示）。"""
+    if not TRANS_ENABLED or not text:
+        return ""
+    s = str(text).strip()
+    if not is_foreign(s):
+        TRANS_STATS["skip"] += 1
+        return ""
+    if s in TRANS_CACHE:
+        TRANS_STATS["hit"] += 1
+        return TRANS_CACHE[s]
+
+    out = ""
+    for fn in (_via_google, _via_mymemory):
+        try:
+            out = fn(s)
+        except Exception as exc:
+            log("  翻译通道不可用（%s）：%s" % (fn.__name__, exc))
+        _throttle()
+        if out:
+            break
+    if out:
+        TRANS_CACHE[s] = out
+        TRANS_STATS["ok"] += 1
+    else:
+        TRANS_CACHE[s] = ""            # 仅本轮记忆，不落盘，下轮可重试
+        TRANS_STATS["fail"] += 1
+    return out
+
+
+def load_trans_cache(path):
+    data = load_json(path, {}) or {}
+    if isinstance(data, dict):
+        for k, v in data.items():
+            if isinstance(k, str) and isinstance(v, str) and v:
+                TRANS_CACHE[k] = v
+    log("翻译缓存载入 %d 条" % len(TRANS_CACHE))
+
+
+def save_trans_cache(path):
+    ok = {k: v for k, v in TRANS_CACHE.items() if v}
+    write_json(path, ok)
+    log("翻译缓存写回 %d 条" % len(ok))
+
+
+def backfill_translations(snapshot, limit=0):
+    """给存量条目补译文：本轮未再抓到的旧条目（含归档遗留）也能补齐，避免新旧条目中英混杂。"""
+    if not TRANS_ENABLED:
+        return 0
+    done = 0
+    for it in (snapshot or {}).get("items") or []:
+        if limit and done >= limit:
+            break
+        title, summary = it.get("title") or "", it.get("summary") or ""
+        need_title = not it.get("title_zh") and is_foreign(title)
+        need_sum = not it.get("summary_zh") and is_foreign(summary)
+        if not need_title and not need_sum:
+            continue
+        if need_title:
+            it["title_zh"] = translate(title)
+        if need_sum:
+            it["summary_zh"] = translate(summary)
+        done += 1
+    if done:
+        log("存量补译：本轮补齐 %d 条" % done)
+    return done
+
+
 # ---------------------------------------------------------------- RSS / Atom
 
 def _lname(tag):
@@ -408,10 +530,22 @@ def build_entry(row, source, seen_at):
         return None
     url = (row.get("url") or "").strip()
     source_name = source.get("name") or ""
+    summary = clean_text(row.get("summary"), 260)
+
+    # 外文条目附带中文译文（原文完整保留；已含中文或达本轮翻译上限则跳过）
+    title_zh, summary_zh = "", ""
+    if TRANS_ENABLED and (TRANS_LIMIT <= 0 or TRANS_STATS["items"] < TRANS_LIMIT):
+        if is_foreign(title) or is_foreign(summary):
+            TRANS_STATS["items"] += 1
+            title_zh = translate(title)
+            summary_zh = translate(summary) if summary else ""
+
     return {
         "id": make_id(title, source_name),
         "title": title,
-        "summary": clean_text(row.get("summary"), 260),
+        "title_zh": title_zh,
+        "summary": summary,
+        "summary_zh": summary_zh,
         "source_name": source_name,
         "source_url": url,
         "published_at": row.get("published_at"),
@@ -648,12 +782,21 @@ def main():
     ap.add_argument("--only", default="", help="仅抓取指定板块，逗号分隔，如 tech,buzz")
     ap.add_argument("--round", default="", help="本轮标签（默认按北京时间自动推断 08:00 / 20:00）")
     ap.add_argument("--date", default="", help="指定归档日期 YYYY-MM-DD（调试用）")
+    ap.add_argument("--no-translate", action="store_true", help="关闭外文条目的自动汉化")
+    ap.add_argument("--translate-limit", type=int, default=0, help="本轮最多汉化条数（0 = 不限）")
+    ap.add_argument("--no-backfill", action="store_true", help="不给存量旧条目补译文")
+    ap.add_argument("--backfill-limit", type=int, default=0, help="存量补译条数上限（0 = 不限）")
     args = ap.parse_args()
+
+    global TRANS_ENABLED, TRANS_LIMIT
+    TRANS_ENABLED = not args.no_translate
+    TRANS_LIMIT = max(0, args.translate_limit)
 
     root = os.path.abspath(args.root)
     config_path = args.config or os.path.join(root, "config", "sources.json")
     docs_dir = args.docs or os.path.join(root, "docs")
     archive_dir = os.path.join(docs_dir, "archive")
+    trans_cache_path = os.path.join(root, "config", "trans_cache.json")
 
     now = now_cst()
     date_str = args.date or now.strftime("%Y-%m-%d")
@@ -668,11 +811,20 @@ def main():
         return 1
     sources = cfg["sources"]
 
+    if TRANS_ENABLED:
+        load_trans_cache(trans_cache_path)
+    else:
+        log("外文汉化：已按 --no-translate 关闭")
+
     grouped, report_sources = fetch_sources(sources, args.limit, only, focus)
 
     snapshot_path = os.path.join(archive_dir, "%s.json" % date_str)
     existing = load_json(snapshot_path)
     snapshot = merge_day_snapshot(existing, grouped, date_str, round_label, iso_cst(now_cst()))
+
+    if TRANS_ENABLED and not args.no_backfill:
+        backfill_translations(snapshot, max(0, args.backfill_limit))
+        save_trans_cache(trans_cache_path)
 
     os.makedirs(archive_dir, exist_ok=True)
     write_json(snapshot_path, snapshot)
@@ -715,12 +867,17 @@ def main():
         "items_total": snapshot["total"],
         "items_new_this_round": sum(len(v) for v in grouped.values()),
         "counts": snapshot["counts"],
+        "translation": dict(TRANS_STATS),
         "sources": report_sources,
     }
     write_json(os.path.join(docs_dir, "report.json"), report)
 
     log("完成：本轮 %d 条，当日累计 %d 条；源 ok %d / failed %d"
         % (report["items_new_this_round"], snapshot["total"], ok, len(failed)))
+    if TRANS_ENABLED:
+        log("汉化：外文条目 %d，新译 %d，命中缓存 %d，失败 %d，跳过（本就是中文）%d"
+            % (TRANS_STATS["items"], TRANS_STATS["ok"], TRANS_STATS["hit"],
+               TRANS_STATS["fail"], TRANS_STATS["skip"]))
     for s in failed:
         log("  · 失败源 %s：%s" % (s["name"], s.get("message")))
     return 0

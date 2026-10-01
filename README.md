@@ -26,6 +26,7 @@ AIGC:
 | 八大板块（标签式导航） | 手机动态 `mobile`（默认落地）/ 天津新闻 `tianjin` / 国内新闻 `domestic` / 国际新闻 `geopolitics` / 地缘冲突 `conflict` / 科技前沿 `tech` / 奇闻怪事 `oddities` / 网络舆论 `buzz` |
 | 板块切换 | 顶部 sticky 横向标签栏，点标签即进对应板块（不再是索引勾选式筛选）；标签带条数角标，窄屏可横向滑动 |
 | 每日两更 | GitHub Actions 在 UTC 00:00 / 12:00（北京时间 08:00 / 20:00）自动抓取并提交 |
+| 外文自动汉化 | 外文源（国际新闻 / 地缘冲突 / 科技外媒等）条目自动附中文译文：标题显示中文、原文小字保留在下方；摘要同样中文优先。主通道 Google 免密端点，备通道 MyMemory，均失败则回退原文，绝不阻断抓取 |
 | 归档快照 | 每天一份 `docs/archive/YYYY-MM-DD.json`，同日多轮抓取**合并去重**，首见时间保留 |
 | 归档索引 | `docs/archive/index.json` 汇总每日轮次、条数、板块分布 |
 | 站内检索 | 首页检索**作用于当前选中板块**（仅最新一期 / 含历史归档）；归档页可先切板块，再按日期或跨归档检索 |
@@ -122,6 +123,25 @@ bash scripts/run_local.sh      # 抓取 + 打开本地预览
 
 ---
 
+## 外文自动汉化
+
+外文源（BBC / The Guardian / Al Jazeera / NYT / ReliefWeb / Defense News / TechCrunch / The Verge / Ars Technica / Boing Boing 等）的条目会自动附上中文译文，与 AI 站的汉化口径一致。
+
+- **判定**：按内容判定而非按源硬编码——CJK 占比 ≤ 15% 且含拉丁字母的文本才翻译，中文条目自动跳过。
+- **通道**：主 `translate.googleapis.com` 免密端点（质量优先），失败自动降级到 `api.mymemory.translated.net`（与 AI 站同接口）；两者都失败则回退原文，**绝不阻断抓取**。
+- **字段**：译文写入条目的 `title_zh` / `summary_zh`，原文 `title` / `summary` 完整保留；前端标题显中文、原文以小字附在下方，摘要中文优先。
+- **缓存**：译文累积在 `config/trans_cache.json`（随仓库提交），已译文本不重复请求，后续轮次接近零开销。
+- **存量补译**：每轮抓取后会扫描快照中缺译文的外文旧条目自动补齐，新旧条目不会中英混杂。
+- **开关**：`--no-translate` 关闭汉化；`--translate-limit N` 限制本轮新译条数；`--no-backfill` 跳过存量补译；`--backfill-limit N` 限制存量补译条数。
+
+```bash
+python3 scripts/update_data.py                        # 抓取 + 汉化（默认全开）
+python3 scripts/update_data.py --no-translate         # 只要原文
+python3 scripts/update_data.py --only __none__        # 不抓取，只给存量快照补译文
+```
+
+---
+
 ## 数据源配置（`config/sources.json`）
 
 ```jsonc
@@ -166,8 +186,10 @@ bash scripts/run_local.sh      # 抓取 + 打开本地预览
 ```jsonc
 {
   "id": "e8b08b8fcf9a2c11",        // sha1(标题 + 来源名) 前 16 位，稳定可复现
-  "title": "……",
+  "title": "……",                   // 原始标题（外文源为原文，完整保留）
+  "title_zh": "……",                // 外文条目的中文译文；中文源为空串
   "summary": "……",                  // 纯文本摘要，截断至 ~260 字
+  "summary_zh": "……",              // 摘要中文译文；中文源为空串
   "source_name": "IT之家",
   "source_url": "https://……",
   "published_at": "2026-10-01T08:00:00+08:00",  // 源未提供则为 null
