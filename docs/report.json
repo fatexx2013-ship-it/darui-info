@@ -1,28 +1,28 @@
 {
-  "generated_at": "2026-10-01T10:38:11+08:00",
-  "date": "2026-10-01",
+  "generated_at": "2026-10-02T01:49:39+08:00",
+  "date": "2026-10-02",
   "round": "08:00",
   "sources_total": 39,
-  "sources_ok": 0,
-  "sources_failed": 0,
-  "items_total": 686,
-  "items_new_this_round": 0,
+  "sources_ok": 38,
+  "sources_failed": 1,
+  "items_total": 665,
+  "items_new_this_round": 669,
   "counts": {
-    "mobile": 105,
-    "tianjin": 57,
+    "mobile": 107,
+    "tianjin": 56,
     "domestic": 90,
     "geopolitics": 80,
-    "conflict": 114,
+    "conflict": 92,
     "tech": 100,
     "oddities": 50,
     "buzz": 90
   },
   "translation": {
     "skip": 0,
-    "hit": 0,
-    "ok": 96,
+    "hit": 240,
+    "ok": 300,
     "fail": 0,
-    "items": 0
+    "items": 270
   },
   "sources": [
     {
@@ -30,351 +30,352 @@
       "block": "mobile",
       "type": "rss",
       "url": "https://www.ithome.com/rss/",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 23,
+      "elapsed": 2.5
     },
     {
       "name": "雷科技",
       "block": "mobile",
       "type": "rss",
       "url": "https://www.leikeji.com/rss",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 9,
+      "elapsed": 1.28
     },
     {
       "name": "cnBeta",
       "block": "mobile",
       "type": "rss",
       "url": "https://www.cnbeta.com.tw/backend.php",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 15,
+      "elapsed": 3.44
     },
     {
       "name": "9to5Google",
       "block": "mobile",
       "type": "rss",
       "url": "https://9to5google.com/feed/",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 15,
+      "elapsed": 13.84
     },
     {
       "name": "手机中国",
       "block": "mobile",
       "type": "rss",
       "url": "https://www.cnmo.com/rss/news.xml",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 15,
+      "elapsed": 3.24
     },
     {
       "name": "GSMArena",
       "block": "mobile",
       "type": "rss",
       "url": "https://www.gsmarena.com/rss-news-reviews.php3",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 15,
+      "elapsed": 15.02
     },
     {
       "name": "XDA Developers",
       "block": "mobile",
       "type": "rss",
       "url": "https://www.xda-developers.com/feed/",
-      "status": "skipped",
+      "status": "ok",
       "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "elapsed": 0.2
     },
     {
       "name": "Google News·手机新机",
       "block": "mobile",
       "type": "rss",
       "url": "https://news.google.com/rss/search?q=%E6%96%B0%E6%9C%BA%20%E5%8F%91%E5%B8%83&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 15,
+      "elapsed": 0.62
     },
     {
       "name": "Google News·天津",
       "block": "tianjin",
       "type": "rss",
       "url": "https://news.google.com/rss/search?q=%E5%A4%A9%E6%B4%A5&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 25,
+      "elapsed": 0.5
     },
     {
       "name": "Google News·天津民生",
       "block": "tianjin",
       "type": "rss",
       "url": "https://news.google.com/rss/search?q=%E5%A4%A9%E6%B4%A5%20%E6%B0%91%E7%94%9F&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 0.54
     },
     {
       "name": "Bing News·天津",
       "block": "tianjin",
       "type": "rss",
       "url": "https://www.bing.com/news/search?q=%E5%A4%A9%E6%B4%A5&format=RSS",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 12,
+      "elapsed": 0.37
     },
     {
       "name": "中国新闻网·滚动",
       "block": "domestic",
       "type": "rss",
       "url": "https://www.chinanews.com.cn/rss/scroll-news.xml",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 2.56
     },
     {
       "name": "界面新闻",
       "block": "domestic",
       "type": "rss",
       "url": "https://a.jiemian.com/index.php?m=article&a=rss",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 2.47
     },
     {
       "name": "人民网·时政",
       "block": "domestic",
       "type": "rss",
       "url": "http://www.people.com.cn/rss/politics.xml",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 0.74
     },
     {
       "name": "极客公园",
       "block": "domestic",
       "type": "rss",
       "url": "https://www.geekpark.net/rss",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 2.92
     },
     {
       "name": "少数派",
       "block": "domestic",
       "type": "rss",
       "url": "https://sspai.com/feed",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 10,
+      "elapsed": 1.7
     },
     {
       "name": "BBC World",
       "block": "geopolitics",
       "type": "rss",
       "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 8.25
     },
     {
       "name": "The Guardian World",
       "block": "geopolitics",
       "type": "rss",
       "url": "https://www.theguardian.com/world/rss",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 7.13
     },
     {
       "name": "Al Jazeera",
       "block": "geopolitics",
       "type": "rss",
       "url": "https://www.aljazeera.com/xml/rss/all.xml",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 9.74
     },
     {
       "name": "NYT World",
       "block": "geopolitics",
       "type": "rss",
       "url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 9.57
     },
     {
       "name": "联合国新闻·中文",
       "block": "conflict",
       "type": "rss",
       "url": "https://news.un.org/feed/subscribe/zh/news/all/rss.xml",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 0.16
     },
     {
       "name": "ReliefWeb（联合国人道协调厅）",
       "block": "conflict",
       "type": "rss",
       "url": "https://reliefweb.int/updates/rss.xml",
-      "status": "skipped",
+      "status": "failed",
       "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "elapsed": 0.13,
+      "message": "ValueError: 返回内容不是 XML 订阅源（疑似被反爬拦截或地址已变更）"
     },
     {
       "name": "Crisis Group",
       "block": "conflict",
       "type": "rss",
       "url": "https://www.crisisgroup.org/rss.xml",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 10,
+      "elapsed": 0.88
     },
     {
       "name": "Defense News",
       "block": "conflict",
       "type": "rss",
       "url": "https://www.defensenews.com/arc/outboundfeeds/rss/",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 15,
+      "elapsed": 4.0
     },
     {
       "name": "War on the Rocks",
       "block": "conflict",
       "type": "rss",
       "url": "https://warontherocks.com/feed/",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 15,
+      "elapsed": 3.73
     },
     {
       "name": "Google News·地缘冲突",
       "block": "conflict",
       "type": "rss",
       "url": "https://news.google.com/rss/search?q=%E5%9C%B0%E7%BC%98%E5%86%B2%E7%AA%81%20OR%20%E6%88%98%E4%BA%89%20when:2d&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 0.42
     },
     {
       "name": "Google News·中东局势",
       "block": "conflict",
       "type": "rss",
       "url": "https://news.google.com/rss/search?q=%E4%B8%AD%E4%B8%9C%20%E5%B1%80%E5%8A%BF&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 15,
+      "elapsed": 0.6
     },
     {
       "name": "Hacker News",
       "block": "tech",
       "type": "rss",
       "url": "https://hnrss.org/frontpage",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 20.05
     },
     {
       "name": "TechCrunch",
       "block": "tech",
       "type": "rss",
       "url": "https://techcrunch.com/feed/",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 6.15
     },
     {
       "name": "The Verge",
       "block": "tech",
       "type": "rss",
       "url": "https://www.theverge.com/rss/index.xml",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 10,
+      "elapsed": 7.35
     },
     {
       "name": "Ars Technica",
       "block": "tech",
       "type": "rss",
       "url": "https://feeds.arstechnica.com/arstechnica/index",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 2.02
     },
     {
       "name": "量子位",
       "block": "tech",
       "type": "rss",
       "url": "https://www.qbitai.com/feed",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 10,
+      "elapsed": 1.71
     },
     {
       "name": "雷峰网",
       "block": "tech",
       "type": "rss",
       "url": "https://www.leiphone.com/feed",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 5.48
     },
     {
       "name": "Oddity Central",
       "block": "oddities",
       "type": "rss",
       "url": "https://www.odditycentral.com/feed",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 10,
+      "elapsed": 0.41
     },
     {
       "name": "Atlas Obscura",
       "block": "oddities",
       "type": "rss",
       "url": "https://www.atlasobscura.com/feeds/latest",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 3.22
     },
     {
       "name": "Boing Boing",
       "block": "oddities",
       "type": "rss",
       "url": "https://boingboing.net/feed",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 20,
+      "elapsed": 10.76
     },
     {
       "name": "百度热搜",
       "block": "buzz",
       "type": "html",
       "url": "https://top.baidu.com/board?tab=realtime",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 30,
+      "elapsed": 2.31
     },
     {
       "name": "今日头条热榜",
       "block": "buzz",
       "type": "api",
       "url": "https://www.toutiao.com/hot-event/hot-board/?origin=toutiao_pc",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 30,
+      "elapsed": 0.91
     },
     {
       "name": "B站热搜",
       "block": "buzz",
       "type": "api",
       "url": "https://api.bilibili.com/x/web-interface/search/square?limit=30",
-      "status": "skipped",
-      "count": 0,
-      "message": "本轮 --only 未包含该板块"
+      "status": "ok",
+      "count": 30,
+      "elapsed": 0.5
     }
   ]
 }
