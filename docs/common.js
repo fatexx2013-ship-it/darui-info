@@ -104,10 +104,17 @@
       return Promise.resolve(window.WIS_SNAPSHOT[date]);
     }
     if (snapCache[date]) return snapCache[date];
-    snapCache[date] = loadScript('archive/' + date + '.js', null).then(function () {
-      var snap = window.WIS_SNAPSHOT && window.WIS_SNAPSHOT[date];
-      if (!snap) throw new Error('快照 ' + date + ' 无数据');
-      return snap;
+    /* 优先 fetch JSON（http/https 托管场景）；file:// 直开 fetch 会失败，
+       回退到旧版 <script> 注入 .js（向后兼容历史文件与本地直读）。 */
+    snapCache[date] = fetch('archive/' + date + '.json').then(function (resp) {
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      return resp.json();
+    }).catch(function (err) {
+      return loadScript('archive/' + date + '.js', null).then(function () {
+        var snap = window.WIS_SNAPSHOT && window.WIS_SNAPSHOT[date];
+        if (!snap) throw err;
+        return snap;
+      });
     }).catch(function (err) {
       delete snapCache[date];              // 失败不缓存，允许重试
       throw err;
