@@ -1,29 +1,29 @@
 {
-  "generated_at": "2026-11-09T12:13:51+08:00",
-  "date": "2026-11-09",
+  "generated_at": "2026-11-10T05:50:05+08:00",
+  "date": "2026-11-10",
   "round": "08:00",
   "sources_total": 39,
   "sources_ok": 38,
   "sources_failed": 1,
-  "items_total": 959,
-  "items_new_this_round": 664,
+  "items_total": 661,
+  "items_new_this_round": 661,
   "counts": {
-    "mobile": 162,
-    "tianjin": 79,
-    "domestic": 135,
-    "geopolitics": 122,
-    "conflict": 112,
-    "tech": 130,
-    "oddities": 51,
-    "buzz": 168
+    "mobile": 106,
+    "tianjin": 55,
+    "domestic": 90,
+    "geopolitics": 80,
+    "conflict": 90,
+    "tech": 100,
+    "oddities": 50,
+    "buzz": 90
   },
   "translation": {
     "skip": 0,
-    "hit": 23,
-    "ok": 629,
+    "hit": 24,
+    "ok": 508,
     "fail": 0,
     "items": 200,
-    "limit_skipped": 68,
+    "limit_skipped": 66,
     "translation_failures": 0
   },
   "sources": [
@@ -33,8 +33,8 @@
       "type": "rss",
       "url": "https://www.ithome.com/rss/",
       "status": "ok",
-      "count": 24,
-      "elapsed": 1.03
+      "count": 25,
+      "elapsed": 1.22
     },
     {
       "name": "雷科技",
@@ -43,7 +43,7 @@
       "url": "https://www.leikeji.com/rss",
       "status": "ok",
       "count": 5,
-      "elapsed": 1.29
+      "elapsed": 1.14
     },
     {
       "name": "cnBeta",
@@ -52,7 +52,7 @@
       "url": "https://www.cnbeta.com.tw/backend.php",
       "status": "ok",
       "count": 15,
-      "elapsed": 4.05
+      "elapsed": 5.14
     },
     {
       "name": "9to5Google",
@@ -61,7 +61,7 @@
       "url": "https://9to5google.com/feed/",
       "status": "ok",
       "count": 15,
-      "elapsed": 67.69
+      "elapsed": 80.53
     },
     {
       "name": "手机中国",
@@ -70,7 +70,7 @@
       "url": "https://www.cnmo.com/rss/news.xml",
       "status": "ok",
       "count": 15,
-      "elapsed": 0.98
+      "elapsed": 1.35
     },
     {
       "name": "GSMArena",
@@ -79,7 +79,7 @@
       "url": "https://www.gsmarena.com/rss-news-reviews.php3",
       "status": "ok",
       "count": 15,
-      "elapsed": 77.87
+      "elapsed": 73.42
     },
     {
       "name": "XDA Developers",
@@ -87,8 +87,8 @@
       "type": "rss",
       "url": "https://www.xda-developers.com/feed/",
       "status": "ok",
-      "count": 3,
-      "elapsed": 9.9
+      "count": 1,
+      "elapsed": 1.58
     },
     {
       "name": "Google News·手机新机",
@@ -97,7 +97,7 @@
       "url": "https://news.google.com/rss/search?q=%E6%96%B0%E6%9C%BA%20%E5%8F%91%E5%B8%83&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
       "status": "ok",
       "count": 15,
-      "elapsed": 0.33
+      "elapsed": 0.44
     },
     {
       "name": "Google News·天津",
@@ -106,7 +106,7 @@
       "url": "https://news.google.com/rss/search?q=%E5%A4%A9%E6%B4%A5&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
       "status": "ok",
       "count": 25,
-      "elapsed": 0.53
+      "elapsed": 0.49
     },
     {
       "name": "Google News·天津民生",
@@ -115,7 +115,7 @@
       "url": "https://news.google.com/rss/search?q=%E5%A4%A9%E6%B4%A5%20%E6%B0%91%E7%94%9F&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
       "status": "ok",
       "count": 20,
-      "elapsed": 0.26
+      "elapsed": 0.32
     },
     {
       "name": "Bing News·天津",
@@ -123,8 +123,8 @@
       "type": "rss",
       "url": "https://www.bing.com/news/search?q=%E5%A4%A9%E6%B4%A5&format=RSS",
       "status": "ok",
-      "count": 12,
-      "elapsed": 0.24
+      "count": 10,
+      "elapsed": 0.35
     },
     {
       "name": "中国新闻网·滚动",
@@ -133,7 +133,7 @@
       "url": "https://www.chinanews.com.cn/rss/scroll-news.xml",
       "status": "ok",
       "count": 20,
-      "elapsed": 2.56
+      "elapsed": 0.71
     },
     {
       "name": "界面新闻",
@@ -142,7 +142,7 @@
       "url": "https://a.jiemian.com/index.php?m=article&a=rss",
       "status": "ok",
       "count": 20,
-      "elapsed": 1.06
+      "elapsed": 1.14
     },
     {
       "name": "人民网·时政",
@@ -151,7 +151,7 @@
       "url": "http://www.people.com.cn/rss/politics.xml",
       "status": "ok",
       "count": 20,
-      "elapsed": 0.87
+      "elapsed": 1.56
     },
     {
       "name": "极客公园",
@@ -160,7 +160,7 @@
       "url": "https://www.geekpark.net/rss",
       "status": "ok",
       "count": 20,
-      "elapsed": 19.45
+      "elapsed": 9.74
     },
     {
       "name": "少数派",
@@ -169,7 +169,7 @@
       "url": "https://sspai.com/feed",
       "status": "ok",
       "count": 10,
-      "elapsed": 0.96
+      "elapsed": 1.31
     },
     {
       "name": "BBC World",
@@ -178,7 +178,7 @@
       "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
       "status": "ok",
       "count": 20,
-      "elapsed": 115.55
+      "elapsed": 110.5
     },
     {
       "name": "The Guardian World",
@@ -187,7 +187,7 @@
       "url": "https://www.theguardian.com/world/rss",
       "status": "ok",
       "count": 20,
-      "elapsed": 103.4
+      "elapsed": 116.67
     },
     {
       "name": "Al Jazeera",
@@ -196,7 +196,7 @@
       "url": "https://www.aljazeera.com/xml/rss/all.xml",
       "status": "ok",
       "count": 20,
-      "elapsed": 92.73
+      "elapsed": 107.92
     },
     {
       "name": "NYT World",
@@ -205,7 +205,7 @@
       "url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
       "status": "ok",
       "count": 20,
-      "elapsed": 103.02
+      "elapsed": 120.6
     },
     {
       "name": "联合国新闻·中文",
@@ -214,7 +214,7 @@
       "url": "https://news.un.org/feed/subscribe/zh/news/all/rss.xml",
       "status": "ok",
       "count": 20,
-      "elapsed": 0.27
+      "elapsed": 0.15
     },
     {
       "name": "ReliefWeb（联合国人道协调厅）",
@@ -223,7 +223,7 @@
       "url": "https://reliefweb.int/updates/rss.xml",
       "status": "failed",
       "count": 0,
-      "elapsed": 0.29,
+      "elapsed": 0.3,
       "message": "ValueError: 返回内容不是 XML 订阅源（疑似被反爬拦截或地址已变更）"
     },
     {
@@ -233,7 +233,7 @@
       "url": "https://www.crisisgroup.org/rss.xml",
       "status": "ok",
       "count": 10,
-      "elapsed": 53.09
+      "elapsed": 61.52
     },
     {
       "name": "Defense News",
@@ -242,7 +242,7 @@
       "url": "https://www.defensenews.com/arc/outboundfeeds/rss/",
       "status": "ok",
       "count": 10,
-      "elapsed": 59.75
+      "elapsed": 53.41
     },
     {
       "name": "War on the Rocks",
@@ -251,7 +251,7 @@
       "url": "https://warontherocks.com/feed/",
       "status": "ok",
       "count": 15,
-      "elapsed": 66.53
+      "elapsed": 75.92
     },
     {
       "name": "Google News·地缘冲突",
@@ -260,7 +260,7 @@
       "url": "https://news.google.com/rss/search?q=%E5%9C%B0%E7%BC%98%E5%86%B2%E7%AA%81%20OR%20%E6%88%98%E4%BA%89%20when:2d&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
       "status": "ok",
       "count": 20,
-      "elapsed": 0.28
+      "elapsed": 0.44
     },
     {
       "name": "Google News·中东局势",
@@ -269,7 +269,7 @@
       "url": "https://news.google.com/rss/search?q=%E4%B8%AD%E4%B8%9C%20%E5%B1%80%E5%8A%BF&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
       "status": "ok",
       "count": 15,
-      "elapsed": 0.42
+      "elapsed": 0.34
     },
     {
       "name": "Hacker News",
@@ -278,7 +278,7 @@
       "url": "https://hnrss.org/frontpage",
       "status": "ok",
       "count": 20,
-      "elapsed": 62.28
+      "elapsed": 72.5
     },
     {
       "name": "TechCrunch",
@@ -287,7 +287,7 @@
       "url": "https://techcrunch.com/feed/",
       "status": "ok",
       "count": 20,
-      "elapsed": 54.01
+      "elapsed": 69.97
     },
     {
       "name": "The Verge",
@@ -296,7 +296,7 @@
       "url": "https://www.theverge.com/rss/index.xml",
       "status": "ok",
       "count": 10,
-      "elapsed": 44.82
+      "elapsed": 47.79
     },
     {
       "name": "Ars Technica",
@@ -305,7 +305,7 @@
       "url": "https://feeds.arstechnica.com/arstechnica/index",
       "status": "ok",
       "count": 20,
-      "elapsed": 34.1
+      "elapsed": 31.14
     },
     {
       "name": "量子位",
@@ -314,7 +314,7 @@
       "url": "https://www.qbitai.com/feed",
       "status": "ok",
       "count": 10,
-      "elapsed": 1.44
+      "elapsed": 1.52
     },
     {
       "name": "雷峰网",
@@ -323,7 +323,7 @@
       "url": "https://www.leiphone.com/feed",
       "status": "ok",
       "count": 20,
-      "elapsed": 2.16
+      "elapsed": 26.68
     },
     {
       "name": "Oddity Central",
@@ -332,7 +332,7 @@
       "url": "https://www.odditycentral.com/feed",
       "status": "ok",
       "count": 10,
-      "elapsed": 21.79
+      "elapsed": 22.85
     },
     {
       "name": "Atlas Obscura",
@@ -341,7 +341,7 @@
       "url": "https://www.atlasobscura.com/feeds/latest",
       "status": "ok",
       "count": 20,
-      "elapsed": 20.82
+      "elapsed": 18.11
     },
     {
       "name": "Boing Boing",
@@ -350,7 +350,7 @@
       "url": "https://boingboing.net/feed",
       "status": "ok",
       "count": 20,
-      "elapsed": 12.43
+      "elapsed": 14.47
     },
     {
       "name": "百度热搜",
@@ -359,7 +359,7 @@
       "url": "https://top.baidu.com/board?tab=realtime",
       "status": "ok",
       "count": 30,
-      "elapsed": 2.03
+      "elapsed": 1.93
     },
     {
       "name": "今日头条热榜",
@@ -368,7 +368,7 @@
       "url": "https://www.toutiao.com/hot-event/hot-board/?origin=toutiao_pc",
       "status": "ok",
       "count": 30,
-      "elapsed": 0.84
+      "elapsed": 0.77
     },
     {
       "name": "B站热搜",
@@ -377,7 +377,7 @@
       "url": "https://api.bilibili.com/x/web-interface/search/square?limit=30",
       "status": "ok",
       "count": 30,
-      "elapsed": 0.43
+      "elapsed": 0.46
     }
   ]
 }
