@@ -1,8 +1,26 @@
 {
-  "updated_at": "2026-11-24T16:05:38+08:00",
-  "total_days": 53,
-  "total_items": 51008,
+  "updated_at": "2026-11-25T05:53:34+08:00",
+  "total_days": 54,
+  "total_items": 51688,
   "days": [
+    {
+      "date": "2026-11-25",
+      "rounds": [
+        "08:00"
+      ],
+      "counts": {
+        "mobile": 104,
+        "tianjin": 56,
+        "domestic": 90,
+        "geopolitics": 80,
+        "conflict": 110,
+        "tech": 100,
+        "oddities": 50,
+        "buzz": 90
+      },
+      "total": 680,
+      "updated_at": "2026-11-25T05:53:33+08:00"
+    },
     {
       "date": "2026-11-24",
       "rounds": [
